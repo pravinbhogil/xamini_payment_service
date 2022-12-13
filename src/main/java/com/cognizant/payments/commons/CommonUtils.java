@@ -1,4 +1,4 @@
-package com.cognizant.payments.payments;
+package com.cognizant.payments.commons;
 
 
 import java.math.BigDecimal;

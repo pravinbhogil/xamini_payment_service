@@ -1,5 +1,9 @@
 package com.cognizant.payments.payments;
 
+import com.cognizant.payments.commons.CommonUtils;
+import com.cognizant.payments.entity.Account;
+import com.cognizant.payments.entity.Customer;
+import com.cognizant.payments.entity.Membership;
 import com.cognizant.payments.payments.publisher.CustomerNotificationService;
 import com.cognizant.payments.payments.publisher.PaymentNotificationService;
 import org.junit.jupiter.api.*;
@@ -19,13 +23,16 @@ class PaymentServiceImplTest {
 
     @Mock
     private PaymentNotificationService paymentNotificationService;
-    @InjectMocks
-    private PaymentServiceImpl paymentService = new PaymentServiceImpl(customerNotificationService, paymentNotificationService);
 
-    private  Customer firstDigital = null;
+    private DiscountService discountService = new DiscountServiceImpl();
+
+    @InjectMocks
+    private PaymentServiceImpl paymentService = new PaymentServiceImpl(customerNotificationService, paymentNotificationService,discountService);
+
+    private Customer firstDigital = null;
     private  Customer janeLuna = null;
 
-    private  Account GOLD_ACCOUNT = null;
+    private Account GOLD_ACCOUNT = null;
     private  Account GOLD_TO_SILVER_ACCOUNT = null;
     private  Account BRONZE_ACCOUNT = null;
     private  Account SILVER_TO_BRONZE_ACCOUNT = null;

@@ -1,4 +1,4 @@
-package com.cognizant.payments.payments;
+package com.cognizant.payments.entity;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

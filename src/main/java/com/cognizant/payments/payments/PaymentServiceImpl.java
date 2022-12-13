@@ -1,59 +1,43 @@
 package com.cognizant.payments.payments;
 
+import com.cognizant.payments.commons.CommonUtils;
+import com.cognizant.payments.entity.Account;
+import com.cognizant.payments.entity.Membership;
 import com.cognizant.payments.payments.publisher.CustomerNotificationService;
 import com.cognizant.payments.payments.publisher.PaymentNotificationService;
 
-public class PaymentServiceImpl {
+public class PaymentServiceImpl implements PaymentService{
 
 	private CustomerNotificationService customerNotificationService;
 	private PaymentNotificationService paymentNotificationService;
+	private DiscountService discountService;
 
-	public PaymentServiceImpl(CustomerNotificationService customerNotificationService, PaymentNotificationService paymentNotificationService) {
+	public PaymentServiceImpl(CustomerNotificationService customerNotificationService, PaymentNotificationService paymentNotificationService,DiscountService discountService) {
 		this.customerNotificationService = customerNotificationService;
 		this.paymentNotificationService = paymentNotificationService;
+		this.discountService=discountService;
 	}
 
-	public String getServiceName() {
-		return  this.getClass().getSimpleName();
-	}
 
 	public void processPayment(Account account, double amount, int salesUnits ) {
 
-		double payment = CommonUtils.round(amount * salesUnits * (1.0 - promotionDischarge(amount, salesUnits)));
+		double payment = CommonUtils.round(amount * salesUnits * (1.0 - discountService.promotionDischarge(amount, salesUnits)));
 
 		account.setBalance( account.getBalance() - payment );
 
 		paymentNotificationService.pay(account, payment);
 
 		var oldMembership = account.getMembership();
-		var newMembership = checkMembership(account);
+		var newMembership = account.checkMembership(account);
 		if ( newMembership != oldMembership) {
 			customerNotificationService.membershipChange(account.getCustomer(), oldMembership, newMembership);
 		}
 
 	}
 
-	private double promotionDischarge( double amount, int salesUnits ) {
-		double discount = 0.0;
-		if ( amount >= 100.0 ) {
-			if ( salesUnits >= 100) {
-				discount = 9.95/ 100;
-			}
-			else if ( salesUnits >= 50) {
-				discount = 4.95 / 100;
-			}
-		}
-		return discount;
-	}
 
-	private Membership checkMembership( Account account )
-	{
-		if ( account.getBalance() > 50_000)
-			return Membership.SILVER;
-		if ( account.getBalance() > 250_000)
-			return Membership.GOLD;
-		return Membership.BRONZE;
-	}
+
+
 
 }
 
