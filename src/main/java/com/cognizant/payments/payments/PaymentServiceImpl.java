@@ -2,7 +2,6 @@ package com.cognizant.payments.payments;
 
 import com.cognizant.payments.payments.publisher.CustomerNotificationService;
 import com.cognizant.payments.payments.publisher.PaymentNotificationService;
-import lombok.var;
 
 public class PaymentServiceImpl {
 
