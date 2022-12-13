@@ -11,6 +11,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import static org.mockito.Mockito.verify;
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 @ExtendWith(MockitoExtension.class)
+@TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class PaymentServiceImplTest {
 
     @Mock
@@ -21,14 +22,14 @@ class PaymentServiceImplTest {
     @InjectMocks
     private PaymentServiceImpl paymentService = new PaymentServiceImpl(customerNotificationService, paymentNotificationService);
 
-    private final Customer firstDigital = new Customer(101, "First Digital");
-    private final Customer janeLuna = new Customer(101, "Jane Luna");
+    private  Customer firstDigital = null;
+    private  Customer janeLuna = null;
 
-    private final Account GOLD_ACCOUNT = new Account(1001, "Premier Track", firstDigital, 500_000, Membership.GOLD);
-    private final Account GOLD_TO_SILVER_ACCOUNT = new Account(1001, "Premier Track", firstDigital, 250_000, Membership.GOLD);
-    private final Account BRONZE_ACCOUNT = new Account(1005, "Russet", new Customer(101, "Cast Cooper"), 40_000, Membership.BRONZE);
-    private final Account SILVER_TO_BRONZE_ACCOUNT = new Account(1005, "Tinsel", janeLuna, 150_000.00, Membership.SILVER);
-    private final Account SILVER_TO_BRONZE_ACCOUNT_2 = new Account(1005, "Tinsel", janeLuna, 52_000.00, Membership.SILVER);
+    private  Account GOLD_ACCOUNT = null;
+    private  Account GOLD_TO_SILVER_ACCOUNT = null;
+    private  Account BRONZE_ACCOUNT = null;
+    private  Account SILVER_TO_BRONZE_ACCOUNT = null;
+    private  Account SILVER_TO_BRONZE_ACCOUNT_2 = null;
 
 
     private static final double fourHundredNinetyNine = 499.99;
@@ -42,6 +43,16 @@ class PaymentServiceImplTest {
     private static  Account actualAccount=null;
 
 
+    @BeforeAll
+    public void initiate(){
+        firstDigital = new Customer(101, "First Digital");
+        janeLuna = new Customer(101, "Jane Luna");
+        GOLD_ACCOUNT = new Account(1001, "Premier Track", firstDigital, 500_000, Membership.GOLD);
+        GOLD_TO_SILVER_ACCOUNT = new Account(1001, "Premier Track", firstDigital, 250_000, Membership.GOLD);
+        BRONZE_ACCOUNT = new Account(1005, "Russet", new Customer(101, "Cast Cooper"), 40_000, Membership.BRONZE);
+        SILVER_TO_BRONZE_ACCOUNT = new Account(1005, "Tinsel", janeLuna, 150_000.00, Membership.SILVER);
+        SILVER_TO_BRONZE_ACCOUNT_2 = new Account(1005, "Tinsel", janeLuna, 52_000.00, Membership.SILVER);
+    }
 
     @Test
     @Order(1)
