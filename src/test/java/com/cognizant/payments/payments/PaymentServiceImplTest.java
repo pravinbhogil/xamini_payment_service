@@ -21,14 +21,14 @@ class PaymentServiceImplTest {
     @InjectMocks
     private PaymentServiceImpl paymentService = new PaymentServiceImpl(customerNotificationService, paymentNotificationService);
 
-    private Customer firstDigital = new Customer(101, "First Digital");
-    private Customer janeLuna = new Customer(101, "First Digital");
+    private final Customer firstDigital = new Customer(101, "First Digital");
+    private final Customer janeLuna = new Customer(101, "Jane Luna");
 
-    private Account GOLD_ACCOUNT = new Account(1001, "Premier Track", firstDigital, 500_000, Membership.GOLD);
-    private Account GOLD_TO_SILVER_ACCOUNT = new Account(1001, "Premier Track", firstDigital, 250_000, Membership.GOLD);
-    private Account BRONZE_ACCOUNT = new Account(1005, "Russet", new Customer(101, "Cast Cooper"), 40_000, Membership.BRONZE);
-    private Account SILVER_TO_BRONZE_ACCOUNT = new Account(1005, "Tinsel", janeLuna, 150_000.00, Membership.SILVER);
-    private Account SILVER_TO_BRONZE_ACCOUNT_2 = new Account(1005, "Tinsel", janeLuna, 52_000.00, Membership.SILVER);
+    private final Account GOLD_ACCOUNT = new Account(1001, "Premier Track", firstDigital, 500_000, Membership.GOLD);
+    private final Account GOLD_TO_SILVER_ACCOUNT = new Account(1001, "Premier Track", firstDigital, 250_000, Membership.GOLD);
+    private final Account BRONZE_ACCOUNT = new Account(1005, "Russet", new Customer(101, "Cast Cooper"), 40_000, Membership.BRONZE);
+    private final Account SILVER_TO_BRONZE_ACCOUNT = new Account(1005, "Tinsel", janeLuna, 150_000.00, Membership.SILVER);
+    private final Account SILVER_TO_BRONZE_ACCOUNT_2 = new Account(1005, "Tinsel", janeLuna, 52_000.00, Membership.SILVER);
 
 
     private static final double fourHundredNinetyNine = 499.99;
@@ -87,7 +87,7 @@ class PaymentServiceImplTest {
     }
 
     @Test
-    @Order(5)
+    @Order(6)
     void processPayment_for_GOLD_TO_SILVER_ACCOUNT_Test() {
         Account expectedAccount = new Account(1001, "Premier Track", firstDigital, 235_742.98, Membership.GOLD);
         var expectedPayment = CommonUtils.round(GOLD_TO_SILVER_ACCOUNT.getBalance() - expectedAccount.getBalance());
@@ -96,7 +96,7 @@ class PaymentServiceImplTest {
     }
 
     @Test
-    @Order(5)
+    @Order(7)
     void processPayment_for_SILVER_TO_BRONZE_ACCOUNT_Test_2() {
         Account expectedAccount = new Account(1005, "Tinsel", janeLuna, 47_000.25, Membership.SILVER);
         var expectedPayment = CommonUtils.round(SILVER_TO_BRONZE_ACCOUNT_2.getBalance() - expectedAccount.getBalance());
